@@ -3,7 +3,9 @@ const inputPassword = document.getElementById("password")
 const loginButton = document.getElementById("login")
 const htmlBody = document.querySelector("body")
 const loginDiv = document.getElementById("loginDiv")
+const messageDiv = document.getElementById("message")
 
+//Inloggningsinformationen. Ska bytas ut så det blir reginput istället.
 const loginInfo = {
     userName: "test",
     password: "1234",
@@ -11,6 +13,12 @@ const loginInfo = {
 
 loginButton.addEventListener("click", logins)
 
+//skapar error meddelandet, men ingen textContent. Detta sker i funktionen logins.
+const wrongMessage = document.createElement("p")
+messageDiv.appendChild(wrongMessage)
+
+//funktion med if sats för att antingen få dig inloggad om input stämmer överens med loginInfo objektet,
+//annars skriver den ut vad som är fel i wrongMessage elementet.
 function logins () {
     const inputtedUsername = inputUsername.value
     const inputtedPassword = inputPassword.value
@@ -23,17 +31,23 @@ function logins () {
     } else if 
     (inputtedUsername != loginInfo.userName &&
     inputtedPassword === loginInfo.password){
-        console.log("användarnamn är felaktig") 
+        wrongMessage.textContent = ("Fel användarnamn! Försök igen!")
+        cleanInput()
     } else if 
     (inputtedUsername === loginInfo.userName &&
     inputtedPassword != loginInfo.password){
-        console.log("lösenord är felaktigt")
+        wrongMessage.textContent = ("Fel lösenord! Försök igen!")
+        cleanInput()
     } else {
-        console.log ("allt är fel!")
+        wrongMessage.textContent = ("Fel användarnamn & lösenord! Försök igen!")
+        cleanInput()
     }
 }
 
+//Välkommen funktionen. Detta kommer man till om inputsen stämmer överens med objektet ovan. 
+//Den byter ut h1 texten "logga in" till "Välkommen namn :D" samt lägger till en logga ut knapp
 function welcome () {
+    wrongMessage.textContent = ("")
     loginDiv.style.display = "none"
     let loginTitle = document.getElementById("h1")
     loginTitle.textContent = "Välkommen"+ " " + inputUsername.value + " "  + ":D"  
@@ -42,10 +56,12 @@ function welcome () {
     logoutButton.textContent = ("logout")
     htmlBody.appendChild(logoutButton)
 
+    //funktionen för logga ut knappen
     logoutButton.addEventListener("click", function(){
         loginDiv.style.display = "block"
         logoutButton.style.display = "none"
         loginTitle.textContent = "Logga in"
+        cleanInput()
     })
 }
 
@@ -54,7 +70,3 @@ function cleanInput () {
     inputUsername.value = ""
     inputPassword.value = ""
 }
-
-
-//Todo efter rast: Nu när jag har sett att if satsen för fel/rätt inloggning funkar så ska jag lägga till ett meddelande för dessa. 
-//samt att optimera med cleanInput där det behövs.
