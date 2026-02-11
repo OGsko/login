@@ -1,4 +1,4 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -24,7 +24,6 @@ body {
 body > * {
     margin-left: 45%;
     width: auto;
-    /* background-color: rgb(121, 250, 138); */
 }
 
 /*Styling för felmeddelande*/
@@ -39,12 +38,18 @@ button {
     background-color: transparent;
     padding-left: 5px;
     padding-right: 5px;
+    width: 50px;
+    height: 20px;
+    background: radial-gradient(circle,rgba(0, 0, 0, 0.12) 0%, rgba(87, 199, 133, 1) 0%, rgba(0, 0, 0, 0.42) 0%);
+    color: blanchedalmond;
 }
 
 input {
     background: #000000;
     background: radial-gradient(circle,rgba(0, 0, 0, 0.12) 0%, rgba(87, 199, 133, 1) 0%, rgba(0, 0, 0, 0.42) 0%);
     border: none;
+    width: 150px;
+    height: 20px;
 }
 
 #loginDiv {
@@ -53,4 +58,10 @@ input {
 
 #h1 {
     text-shadow: -1px 0 rgb(255, 236, 236), 0 1px rgb(255, 236, 236), 1px 0 rgb(255, 236, 236), 0 -1px rgb(255, 236, 236);
+}
+
+@media (max-width: 400px) {
+    body > * {
+        margin-left: 0%;
+    }
 }

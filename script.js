@@ -4,11 +4,12 @@ const loginButton = document.getElementById("login")
 const htmlBody = document.querySelector("body")
 const loginDiv = document.getElementById("loginDiv")
 const messageDiv = document.getElementById("message")
+const regButton = document.getElementById ("regButton")
 
-//Inloggningsinformationen. Ska bytas ut så det blir reginput istället.
+//Inloggningsinformationen. Info från registreringen
 const loginInfo = {
-    userName: "test",
-    password: "1234",
+    userName: "",
+    password: "",
 }
 
 loginButton.addEventListener("click", logins)
@@ -65,8 +66,75 @@ function welcome () {
     })
 }
 
-//funktion för att rensa input fälten
+
+
+regButton.addEventListener ("click", regForm)
+
+function regForm() {
+    const regTitle = document.getElementById("h1")
+    regTitle.textContent = "Registrera dig"
+
+    loginDiv.style.display = "none"
+    
+    //skapar en div
+    const regDiv = document.createElement("div")
+    htmlBody.appendChild(regDiv)
+
+    //skapar p taggar för input fälten
+    const regUserNameP = document.createElement("p")
+    regUserNameP.textContent = "Önskat Username"
+    const regPasswordP = document.createElement ("p")
+    regPasswordP.textContent = "Önskat Password"
+    
+    //skapar input fälten
+    const regUserNameInput = document.createElement("input")
+    const regPasswordInput = document.createElement("input")
+
+    //Lägger till allt i skapade diven
+    regDiv.appendChild(regUserNameP)
+    regDiv.appendChild(regUserNameInput)
+    regDiv.appendChild(regPasswordP)
+    regDiv.appendChild(regPasswordInput)
+    
+    //skapar infoga reg knapp
+    const insertRegButton = document.createElement("button")
+    insertRegButton.textContent = "infoga"
+    htmlBody.appendChild(insertRegButton)
+
+    //funktion för insert knappen som lägger det man skrivit in i loginInfo objektet
+    insertRegButton.addEventListener("click", function() {
+        const inputtedRegName = regUserNameInput.value
+        const inputtedRegPw = regPasswordInput.value
+        loginInfo.userName = inputtedRegName
+        loginInfo.password = inputtedRegPw
+        backToLogin()
+})
+
+    //skapar och funktion till tillbaka knappen
+    const backButton = document.createElement("button")
+    backButton.textContent = "tillbaka"
+    htmlBody.appendChild(backButton)
+
+    backButton.addEventListener ("click", backToLogin)
+
+    function backToLogin (){
+        loginDiv.style.display = "block"
+        backButton.style.display = "none" 
+        insertRegButton.style.display = "none"
+        regDiv.style.display = "none"
+        regTitle.textContent = "Logga in"
+        cleanInput()
+    }
+}
+
+//funktion för att hämta
 function cleanInput () {
     inputUsername.value = ""
     inputPassword.value = ""
 }
+
+//todo 
+//1.Göra så du inte kan regga tomma konton (med if sats)
+//2.Fixa så det går att ha flera användare (med if sats, typ if user1 objektet redan har användare, registreara på user2 etc.)
+//-Inlogg ska sparas i local storages så man är inloggad efter man refreshar
+//-Logga ut knappen ska rensa local storage
