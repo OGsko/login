@@ -6,11 +6,6 @@ const loginDiv = document.getElementById("loginDiv")
 const messageDiv = document.getElementById("message")
 const regButton = document.getElementById ("regButton")
 
-//Inloggningsinformationen. Info från registreringen
-const loginInfo = {
-    userName: "",
-    password: "",
-}
 
 loginButton.addEventListener("click", logins)
 
@@ -24,24 +19,20 @@ function logins () {
     const inputtedUsername = inputUsername.value
     const inputtedPassword = inputPassword.value
 
-    if 
-    (inputtedUsername === loginInfo.userName &&
-    inputtedPassword === loginInfo.password
-    ){
-        welcome () 
-    } else if 
-    (inputtedUsername != loginInfo.userName &&
-    inputtedPassword === loginInfo.password){
+    const user = userStorages.find(u => u.userName === inputtedUsername)
+
+    if (!user) {
+        wrongMessage.style.display = "block"
         wrongMessage.textContent = ("Fel användarnamn! Försök igen!")
         cleanInput()
-    } else if 
-    (inputtedUsername === loginInfo.userName &&
-    inputtedPassword != loginInfo.password){
+        return
+    } else if (user.password != inputtedPassword) {
+        wrongMessage.style.display = "block"
         wrongMessage.textContent = ("Fel lösenord! Försök igen!")
         cleanInput()
+        return
     } else {
-        wrongMessage.textContent = ("Fel användarnamn & lösenord! Försök igen!")
-        cleanInput()
+        welcome ()
     }
 }
 
@@ -65,8 +56,8 @@ function welcome () {
         cleanInput()
     })
 }
-
-
+//Här lagras username och password
+const userStorages = []
 
 regButton.addEventListener ("click", regForm)
 
@@ -75,7 +66,8 @@ function regForm() {
     regTitle.textContent = "Registrera dig"
 
     loginDiv.style.display = "none"
-    
+    wrongMessage.style.display = "none"
+
     //skapar en div
     const regDiv = document.createElement("div")
     htmlBody.appendChild(regDiv)
@@ -89,6 +81,7 @@ function regForm() {
     //skapar input fälten
     const regUserNameInput = document.createElement("input")
     const regPasswordInput = document.createElement("input")
+    regPasswordInput.setAttribute("type", "password")
 
     //Lägger till allt i skapade diven
     regDiv.appendChild(regUserNameP)
@@ -103,10 +96,14 @@ function regForm() {
 
     //funktion för insert knappen som lägger det man skrivit in i loginInfo objektet
     insertRegButton.addEventListener("click", function() {
-        const inputtedRegName = regUserNameInput.value
-        const inputtedRegPw = regPasswordInput.value
-        loginInfo.userName = inputtedRegName
-        loginInfo.password = inputtedRegPw
+
+        const loginInfo = {
+        userName: regUserNameInput.value,
+        password: regPasswordInput.value,
+     }
+//pushar upp till arrayen
+        userStorages.push(loginInfo)
+
         backToLogin()
 })
 
@@ -134,7 +131,6 @@ function cleanInput () {
 }
 
 //todo 
-//1.Göra så du inte kan regga tomma konton (med if sats)
-//2.Fixa så det går att ha flera användare (med if sats, typ if user1 objektet redan har användare, registreara på user2 etc.)
-//-Inlogg ska sparas i local storages så man är inloggad efter man refreshar
-//-Logga ut knappen ska rensa local storage
+//1. Få in localStorage så inloggning håller sig tills man loggar ut 
+//2. Fixa tillbaka knappen så den inte är åt helvete
+//3. Fixa styling på reg formuläret
