@@ -6,6 +6,11 @@ const loginDiv = document.getElementById("loginDiv")
 const messageDiv = document.getElementById("message")
 const regButton = document.getElementById ("regButton")
 
+//Här lagras username och password
+const userStorages = []
+
+//här lagras den aktivt inloggade
+let activeUser = []
 
 loginButton.addEventListener("click", logins)
 
@@ -32,6 +37,7 @@ function logins () {
         cleanInput()
         return
     } else {
+        activeUser.push(inputtedUsername)
         welcome ()
     }
 }
@@ -50,14 +56,18 @@ function welcome () {
 
     //funktionen för logga ut knappen
     logoutButton.addEventListener("click", function(){
+        // activeUser = []
+        const activeUserIndex = userStorages.findIndex(
+            i => i.userName === inputUsername.value
+        )
+        userStorages.splice(activeUserIndex, 1)
+        console.log(userStorages)
         loginDiv.style.display = "block"
         logoutButton.style.display = "none"
         loginTitle.textContent = "Logga in"
         cleanInput()
     })
 }
-//Här lagras username och password
-const userStorages = []
 
 regButton.addEventListener ("click", regForm)
 
@@ -103,7 +113,7 @@ function regForm() {
      }
 //pushar upp till arrayen
         userStorages.push(loginInfo)
-
+console.log(userStorages)
         backToLogin()
 })
 
@@ -124,7 +134,7 @@ function regForm() {
     }
 }
 
-//funktion för att hämta
+//funktion för att rensa
 function cleanInput () {
     inputUsername.value = ""
     inputPassword.value = ""
