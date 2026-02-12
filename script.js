@@ -6,17 +6,35 @@ const loginDiv = document.getElementById("loginDiv")
 const messageDiv = document.getElementById("message")
 const regButton = document.getElementById ("regButton")
 
-//Här lagras username och password
-const userStorages = []
+//variabler för nyklar till local storage
+const userKey = "users"
+const activeUserKey = "activeUser"
 
-//här lagras den aktivt inloggade
-let activeUser = []
+//Här lagras username och password. Kollar efter redan sparade konton, annars tom
+const userStorages = JSON.parse(localStorage.getItem(userKey)) || []
+
+//här lagras den aktivt inloggade. Den kollar efter en active user, annars är arrayen tom
+let activeUser = JSON.parse(localStorage.getItem(activeUserKey)) || []
+
+//funktion för att lägga till alla skapade 
+function saveUsers() {
+    localStorage.setItem(userKey, JSON.stringify(userStorages))
+}
+//samma som ovan men bara för active user
+function saveActiveUser() {
+    localStorage.setItem(activeUserKey, JSON.stringify(activeUser))
+}
 
 loginButton.addEventListener("click", logins)
 
 //skapar error meddelandet, men ingen textContent. Detta sker i funktionen logins.
 const wrongMessage = document.createElement("p")
 messageDiv.appendChild(wrongMessage)
+
+if (activeUser.length > 0) {
+    inputUsername.value = activeUser[0].activeUserName
+    welcome()
+}
 
 //funktion med if sats för att antingen få dig inloggad om input stämmer överens med loginInfo objektet,
 //annars skriver den ut vad som är fel i wrongMessage elementet.
@@ -37,7 +55,10 @@ function logins () {
         cleanInput()
         return
     } else {
-        activeUser.push(inputtedUsername)
+        activeUserObject = {activeUserName: inputtedUsername}
+        //skriver över aktiv user 
+        activeUser = [activeUserObject]
+        saveActiveUser()
         welcome ()
     }
 }
@@ -56,12 +77,9 @@ function welcome () {
 
     //funktionen för logga ut knappen
     logoutButton.addEventListener("click", function(){
-        // activeUser = []
-        const activeUserIndex = userStorages.findIndex(
-            i => i.userName === inputUsername.value
-        )
-        userStorages.splice(activeUserIndex, 1)
-        console.log(userStorages)
+        activeUser = []
+        saveActiveUser()
+       
         loginDiv.style.display = "block"
         logoutButton.style.display = "none"
         loginTitle.textContent = "Logga in"
@@ -113,7 +131,7 @@ function regForm() {
      }
 //pushar upp till arrayen
         userStorages.push(loginInfo)
-console.log(userStorages)
+        saveUsers()
         backToLogin()
 })
 
@@ -140,7 +158,9 @@ function cleanInput () {
     inputPassword.value = ""
 }
 
-//todo 
-//1. Få in localStorage så inloggning håller sig tills man loggar ut 
-//2. Fixa tillbaka knappen så den inte är åt helvete
-//3. Fixa styling på reg formuläret
+
+//TODO innan hosting och inlämning
+//1. Försök att buggchecka så mycket som möjligt så allt står rätt till
+//2. Om tid finns kika på knappen i reg formuläret. 
+//3. Gör repot public och hosta sidan
+//4. Gör ett dokument med info till inlämning! 
